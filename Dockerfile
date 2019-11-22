@@ -11,6 +11,8 @@ RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         openssh-client \
         libpng-dev \
+        apt-utils \
+	    apt-transport-https \
         libcurl4-openssl-dev \
         curl \
         libtidy* \
