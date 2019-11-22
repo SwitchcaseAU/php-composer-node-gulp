@@ -13,6 +13,7 @@ RUN apt-get update \
         libpng-dev \
         apt-utils \
 	    apt-transport-https \
+	    software-properties-common \
         libcurl4-openssl-dev \
         curl \
         libtidy* \
