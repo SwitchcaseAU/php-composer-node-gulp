@@ -8,6 +8,16 @@ FROM ubuntu:18.04
 MAINTAINER Amit Chandra <amit@switchcase.com.au>
 
 
+# locale
+RUN apt-get clean && apt-get update
+RUN apt-get install locales
+
+## Update locales
+RUN locale-gen en_US.UTF-8  
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8
+
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         openssh-client \
@@ -34,15 +44,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -r /var/lib/apt/lists/*
 
-# locale
-RUN apt-get clean && apt-get update
-RUN apt-get install locales
-
-## Update locales
-RUN locale-gen en_US.UTF-8  
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
-ENV LC_ALL en_US.UTF-8 
+ 
 
 ## Add php repository
 RUN add-apt-repository ppa:ondrej/php -y
@@ -73,7 +75,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
-RUN ln -fs /usr/share/zoneinfo/Australia/Sydney/etc/localtime
+RUN ln -fs /usr/share/zoneinfo/Australia/Sydney /etc/localtime
 RUN dpkg-reconfigure --frontend noninteractive tzdata
 
 ## Add SSL support
