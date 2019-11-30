@@ -32,9 +32,6 @@ RUN apt-get update \
 		gnupg2
 
 
-	
-
-
 ## Add NodeJS
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
     && apt-get install -y nodejs
@@ -52,12 +49,6 @@ RUN apt-get -y install yarn
 ## Install Gulp global
 RUN npm install -g gulp
 
-
-## Add composer bin to PATH
-ENV PATH "$PATH:$HOME/.composer/vendor/bin"
-
-## Install composer plugins
-RUN /usr/local/bin/composer global require "hirak/prestissimo:^0.3.9"
 
 ## Install codesniffer
 RUN wget https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
