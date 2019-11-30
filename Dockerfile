@@ -3,8 +3,8 @@
 # Ideal for Drupal builds  
 #############################################################################
 
-## Add base image from Ubuntu
-FROM ubuntu:18.04
+## Add php image
+FROM php:7.3-cli
 MAINTAINER Amit Chandra <amit@switchcase.com.au>
 
 
@@ -18,68 +18,24 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
 
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN ln -fs /usr/share/zoneinfo/Australia/Sydney /etc/localtime
+RUN dpkg-reconfigure --frontend noninteractive tzdata
+
 RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        openssh-client \
-        libpng-dev \
-        apt-utils \
-	    apt-transport-https \
-	    software-properties-common \
-        libcurl4-openssl-dev \
-        curl \
-        libtidy* \
-        libzip-dev \
-        mysql-client \
-        gnupg \
-        git \
-        rsync \
-        unzip \
-        make \
-        curl \
-    	ca-certificates \
-	    wget \
-	    python3 \
-    	python3-pip \
-    	python3-setuptools \
-    && apt-get clean \
-    && rm -r /var/lib/apt/lists/*
+	&& apt-get install -y \
+		openssl \
+		git \
+		gnupg2
 
- 
 
-## Add php repository
-RUN add-apt-repository ppa:ondrej/php -y
-
-## Add git repository
-RUN add-apt-repository ppa:git-core/ppa -y
-
-## PHP 7.3
-RUN apt-get update && apt-get install -y --no-install-recommends \
-	php7.3-readline \
-	php7.3-cli \
-	php7.3-mysql \
-	php7.3-json \
-	php7.3-dom \
-	php7.3-gmp \
-	php7.3-mbstring \
-	php7.3-zip \
-	php7.3-gd \
-	php7.3-bcmath \
-	php7.3-bz2 \
-	php7.3-curl \
-	php7.3-intl \
-	php7.3-redis \
-	php7.3-imap
 	
 
 ## Add yarn repository
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
-RUN ln -fs /usr/share/zoneinfo/Australia/Sydney /etc/localtime
-RUN dpkg-reconfigure --frontend noninteractive tzdata
-
-## Add SSL support
-RUN apt-get -y install libssl-dev openssl
 
 ## Add NodeJS
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
@@ -93,9 +49,6 @@ RUN apt-get -y install npm yarn
 ## Install Gulp global
 RUN npm install -g gulp
 
-## Install composer
-RUN curl -sS https://getcomposer.org/installer | php
-RUN mv composer.phar /usr/local/bin/composer
 
 ## Add composer bin to PATH
 ENV PATH "$PATH:$HOME/.composer/vendor/bin"
