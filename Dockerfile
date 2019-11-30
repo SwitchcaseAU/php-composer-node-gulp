@@ -34,18 +34,20 @@ RUN apt-get update \
 
 	
 
+
+## Add NodeJS
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
+    && apt-get install -y nodejs
+    && apt-get clean
+
+
 ## Add yarn repository
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
 
-## Add NodeJS
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
-    && apt-get install -y nodejs \
-    && apt-get clean
-
 ## Install yarn
-RUN apt-get -y install npm yarn
+RUN apt-get -y install yarn
 
 
 ## Install Gulp global
