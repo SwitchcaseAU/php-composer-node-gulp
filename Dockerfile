@@ -7,21 +7,23 @@
 FROM php:7.3-cli
 MAINTAINER Amit Chandra <amit@switchcase.com.au>
 
-
 # locale
-RUN apt-get clean && apt-get update
-RUN apt-get install locales
-
-## Update locales
-RUN locale-gen en_US.UTF-8  
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
-ENV LC_ALL en_US.UTF-8
+RUN apt-get update \
+	&& apt-get install -y locales
 
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN ln -fs /usr/share/zoneinfo/Australia/Sydney /etc/localtime
 RUN dpkg-reconfigure --frontend noninteractive tzdata
+
+RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen \
+	&& locale-gen
+	
+## Update locales
+RUN locale-gen en_US.UTF-8  
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8	
 
 RUN apt-get update \
 	&& apt-get install -y \
